@@ -12,28 +12,26 @@ def scrape_url(url):
     root = lxml.html.fromstring(html)
     results = root.xpath (result_xpath)
     print results
-    for x in results:
+    for x in results:	
         record['player']=x[0][0].text
+        record['country']=x[0][0].tail
         record['span'] = x[1].text
         record['Mat'] =  x[2].text
         record['Inns'] =  x[3].text
-        record['Balls'] =  x[4].text
-        record['Runs'] =  x[5].text
-        record['WktsDescending']=x[6][0].text
-        record['BBI']=x[7].text
-        record['BBM']=x[8].text
-        record['Ave']=x[9].text
-        record['Econ']=x[10].text
-        record['SR']=x[11].text
-        record['Fivefor']=x[12].text
-        record['Tenfor']=x[13].text
+        record['No'] =  x[4].text
+        record['RunsDescending']=x[5][0].text
+        record['Highest']=x[6].text
+        record['Average']=x[7].text
+        record['100']=x[8].text
+        record['50']=x[9].text
+        record['0']=x[10].text
         print record
-        scraperwiki.sqlite.save(unique_keys=['player'], data=record, table_name='bowl_above_35') 
+        scraperwiki.sqlite.save(unique_keys=['player'], data=record, table_name='allbatsmen') 
 
 #SETUP
-baseurl = 'http://stats.espncricinfo.com/ci/engine/stats/index.html?agemin2=35;ageval2=age;class=1;filter=advanced;orderby=wickets;template=results;type=bowling'
+baseurl = 'http://stats.espncricinfo.com/ci/engine/stats/index.html?class=1;filter=advanced;orderby=runs;template=results;type=batting'
 result_xpath = '//*[@id="ciHomeContentlhs"]/div[3]/table[3]/tbody/tr[td/a]'
-for i in range(1,6):
+for i in range(1,61):
     starting_url=baseurl+";page="+str(i)
     print starting_url
     scrape_url(starting_url)
