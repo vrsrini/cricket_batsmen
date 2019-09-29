@@ -13,26 +13,23 @@ def scrape_url(url):
     results = root.xpath (result_xpath)
     print results
     for x in results:	
-        record['player']=x[0][0].text
-        record['country']=x[0][0].tail
-        record['span'] = x[1].text
-        record['Mat'] =  x[2].text
-        record['Inns'] =  x[3].text
-        record['No'] =  x[4].text
-        record['RunsDescending']=x[5][0].text
-        record['Highest']=x[6].text
-        record['Average']=x[7].text
-        record['100']=x[8].text
-        record['50']=x[9].text
-        record['0']=x[10].text
+        record['rank']=x[0].text
+        record['mark'] = x[1].text
+        record['wind'] =  x[2].text
+        record['competitor'] =  x[3].text
+        record['dob'] =  x[4].text
+        record['nat']=x[5][0].text
+        record['pos']=x[6].text
+        record['venue']=x[7].text
+        record['date']=x[8].text
         print record
-        scraperwiki.sqlite.save(unique_keys=['player'], data=record, table_name='allbatsmen') 
+        scraperwiki.sqlite.save(unique_keys=['date', 'competitor'], data=record, table_name='100races') 
 
 #SETUP
-baseurl = 'http://stats.espncricinfo.com/ci/engine/stats/index.html?class=1;filter=advanced;orderby=runs;template=results;type=batting'
-result_xpath = '//*[@id="ciHomeContentlhs"]/div[3]/table[3]/tbody/tr[td/a]'
-for i in range(1,61):
-    starting_url=baseurl+";page="+str(i)
+baseurl = 'https://www.iaaf.org/records/toplists/sprints/100-metres/outdoor/men/senior/2017?regionType=world&timing=electronic&windReading=regular&bestResultsOnly=false'
+result_xpath = '//*[@id="toplists"]/div[3]/table/tbody/tr[td]'
+for i in range(1,181):
+    starting_url=baseurl+"&page="+str(i)
     print starting_url
     scrape_url(starting_url)
     
